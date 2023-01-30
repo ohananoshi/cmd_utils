@@ -1,1 +1,1 @@
-Set os usefull functions to write on cmd.
+Set of usefull functions to write on cmd.
