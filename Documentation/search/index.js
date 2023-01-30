@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixIndexLoaded(["bor","cmd","col","dra","fil","mov","set","wri"]);
