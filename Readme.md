@@ -15,7 +15,7 @@
 - #### border_shape: 
 ###### set of characters to construct boxes
 
-![](images/box_example_1.png "box construction characters")
+![](Images/box_example_1.png "box construction characters")
 
 ### Predefs
 
@@ -40,18 +40,18 @@
 
 
 #### CMD Color Scheme
-![](images/color_scheme.png "possible colors for cmd")
+![](Images/color_scheme.png "possible colors for cmd")
 
 #### All other colors can be obtained by combinations of the first 16 colors.
 
 - #### Shapes
     - #### DOUBLE_LINE
 
-    ![](images/shape_example.png "double line")
+    ![](Images/shape_example.png "double line")
 
     - #### SINGLE_LINE
 
-    ![](images/shape_example2.png "single line")
+    ![](Images/shape_example2.png "single line")
 
 - #### Characters
 
@@ -60,7 +60,7 @@
     - #### LIGHT_SHADE
     - #### FULL_FILLED
 
-    ![](images/shade_example.png "single line")
+    ![](Images/shade_example.png "single line")
 
 ### Functions
 - #### set_to_fullsceen
@@ -114,7 +114,7 @@
     }
     ```
 
-    ![](images/draw_box_example.png "single line")
+    ![](Images/draw_box_example.png "single line")
 
 - #### fill_rectangle
 
@@ -138,7 +138,7 @@
     }
     ```
 
-    ![](images/fill_rectangle_example.png "single line")
+    ![](Images/fill_rectangle_example.png "single line")
 
 - #### print_list
 
@@ -169,4 +169,4 @@
     return 0;
     }
     ```
-    ![](images/print_list_example.png "single line")
+    ![](Images/print_list_example.png "single line")
