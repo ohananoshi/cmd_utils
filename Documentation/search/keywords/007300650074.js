@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("set",["Function"],[["set_text_color",,[[,,,,0,"File:cmd_utilities.h:set_text_color"]]],["set_to_fullscreen",,[[,,,,0,"File:cmd_utilities.h:set_to_fullscreen"]]]]);

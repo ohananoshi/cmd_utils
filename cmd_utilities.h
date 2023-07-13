@@ -4,33 +4,34 @@
 
    Author: Guilherme Arruda
 
-   GitHub: https://github.com/ohananoshi
+   GitHub: https://github.com/ohananoshi/cmd_utilities
 
-   Included Libraries:
-    - stdbool.h
-    - windows.h
-    - wincon.h
+   Created in: 19/02/23
+
+   Last Updated: 13/07/23
 */
 
 #pragma once
 
+//================================ HEADERS ======================================
+
+#include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <windows.h>
 #include <wincon.h>
 
-//Types: border_shape
-//Set of characters to construct boxes
+//======================== TYPES AND DATA STRUCTURES ============================
+
 typedef struct{
-    short int left_high_corner_chr;
-    short int right_high_corner_chr;
-    short int left_bottom_corner_chr;
-    short int right_botton_corner_chr;
-    short int horizontal_character;
-    short int vertical_character;
+    uint16_t left_high_corner_chr;
+    uint16_t right_high_corner_chr;
+    uint16_t left_bottom_corner_chr;
+    uint16_t right_botton_corner_chr;
+    uint16_t horizontal_character;
+    uint16_t vertical_character;
 }border_shape;
 
-//Enum: colors
-//Set of standard colors for cmd.
 enum colors{
     BLACK = 0,
     DARK_BLUE,
@@ -50,10 +51,20 @@ enum colors{
     WHITE
 };
 
-border_shape DOUBLE_LINE = {201, 187, 200, 188, 205, 186};
+//=========================== PRE-DEFINED SHAPES ======================================
 
-//Function: set_to_fullscreen
-//Display the console in fullscreen mode.
+border_shape DOUBLE_LINE = {201, 187, 200, 188, 205, 186},
+             SINGLE_LINE = {218, 191, 192, 217, 196, 179};
+
+//========================= PRE-DEFINE CHARACTERS =====================================
+
+uint8_t HEAVY_SHADE = 178,
+        MEDIUM_SHADE = 177,
+        LIGHT_SHADE = 176,
+        FULL_FILLED = 219;
+
+//================================ FUNCTIONS ==========================================
+
 bool set_to_fullscreen(){
 
     //Obter handle da janela atual
@@ -63,7 +74,7 @@ bool set_to_fullscreen(){
     //Alterar o estilo da janela para tela cheia
     SetWindowLong(console_window_handle, GWL_STYLE, WS_POPUP | WS_VISIBLE);
 
-    //Redimensionar a janela para as dimensões da tela
+    //Redimensionar a janela para as dimensï¿½es da tela
     int width = GetSystemMetrics(SM_CXSCREEN);
     int height = GetSystemMetrics(SM_CYSCREEN);
     if(SetWindowPos(console_window_handle, HWND_TOP, 0, 0, width, height, SWP_SHOWWINDOW)) return 0;
@@ -71,95 +82,72 @@ bool set_to_fullscreen(){
     return 1;
 }
 
-/*Function: set_text_color
-  Change the color of the text (see color_scheme.png)
-
-  To set a background color to selected foreground color,
-
-  just add the background color multiplied by 16 (see example1.png)
-
-  Parameters:
-    color - decimal value of color (8bit).
-*/
-void set_text_color(unsigned short int color){
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+void set_color(uint16_t foreground_color, uint16_t background_color){
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (foreground_color + background_color*16));
 }
 
-//Function: move_cursor
-//Moves the console cursor for the specified position in coluns and lines.
-void move_cursor(unsigned short int x,unsigned short int y){
+void move_cursor(uint16_t column, uint16_t line){
 
 	COORD coordinates;
-	coordinates.X = x;
-	coordinates.Y = y;
+	coordinates.X = column;
+	coordinates.Y = line;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 
 }
 
-//Function: write_text
-//Write a text in defined position.
-void write_text(char *text, short int x, short int y){
-    move_cursor(x,y);
+void write_text(char *text, uint16_t column, uint16_t line){
+    move_cursor(column, line);
     printf("%s", text);
 }
 
-/*Function: draw_box
+void draw_box(border_shape shape, uint16_t width, uint16_t height, uint16_t column, uint16_t line){
 
-  Draw a empty static box with some properties using characters ASCII.
+    move_cursor(column, line);
 
-  Parameters:
+    printf("%c", shape.left_high_corner_chr);
 
-    ascii_dec_symbols - Pointer with a set of characters necessaries for the construction
-                        of box.
-    pos               - Position of box relative Left high corner of console
-
-*/
-
-void draw_box(border_shape *ascii_dec_symbols,
-              short int width,
-              short int height,
-              short int *pos){
-
-    move_cursor(pos[0],pos[1]);
-
-    printf("%c", ascii_dec_symbols->left_high_corner_chr);
-
-    for(short int i = 0; i < (width - 2); i++){
-        printf("%c",ascii_dec_symbols->horizontal_character);
+    for(uint16_t i = 0; i < (width - 2); i++){
+        printf("%c",shape.horizontal_character);
     }
 
-    printf("%c", ascii_dec_symbols->right_high_corner_chr);
+    printf("%c", shape.right_high_corner_chr);
 
-    for(short int j = 1; j < (height-2); j++){
-        move_cursor(pos[0], pos[1] + j);
-        printf("%c", ascii_dec_symbols->vertical_character);
-        move_cursor(pos[0] + (width - 1), pos[1] + j);
-        printf("%c", ascii_dec_symbols->vertical_character);
+    for(uint16_t j = 1; j < (height-2); j++){
+        move_cursor(column, line + j);
+        printf("%c", shape.vertical_character);
+        move_cursor(column + (width - 1), line + j);
+        printf("%c", shape.vertical_character);
     }
 
-    move_cursor(pos[0], pos[1] + height - 2);
-    printf("%c", ascii_dec_symbols->left_bottom_corner_chr);
+    move_cursor(column, line + height - 2);
+    printf("%c", shape.left_bottom_corner_chr);
 
-    for(short int i = 0; i < (width - 2); i++){printf("%c",ascii_dec_symbols->horizontal_character);}
+    for(uint16_t i = 0; i < (width - 2); i++){printf("%c",shape.horizontal_character);}
 
-    printf("%c", ascii_dec_symbols->right_botton_corner_chr);
+    printf("%c", shape.right_botton_corner_chr);
 }
 
-/* Function: fill_rectangle
-
-   Print a fill rectangle with size of parameters.
-
-   Parameters:
-
-     ascii_dec_character - decimal value os asacii character
-     width               - width of rectangle
-     height              - height of rectangle
-*/
-
-void fill_rectangle(short int ascii_dec_character, short int width, short int height){
-    for (short int i = 0; i < height; i++){
-        for(short int j = 0; j < width; j++){
+void fill_rectangle(uint16_t ascii_dec_character, uint16_t width, uint16_t height, uint16_t column, uint16_t line){
+    for (uint16_t i = 0; i < height; i++){
+        move_cursor(column, line + i);
+        for(uint16_t j = 0; j < width; j++){
             printf("%c", ascii_dec_character);
+        }
+    }
+}
+
+void print_list(char **string_array, uint16_t string_counter, uint16_t column, uint16_t line, uint16_t space, bool direction){
+
+    uint16_t offset = column;
+
+    if(direction){
+        for(uint16_t i = 0; i < string_counter; i++){
+        write_text(string_array[i], column, line+i*space);
+        }
+    }else{
+        for(uint16_t i = 0; i < string_counter; i++){
+        write_text(string_array[i], column+offset + i*space, line);
+        offset = offset + strlen(string_array[i]);
         }
     }
 }

@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("wri",["Function"],[["write_text",,[[,,,,0,"File:cmd_utilities.h:write_text"]]]]);

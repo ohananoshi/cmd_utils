@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("mov",["Function"],[["move_cursor",,[[,,,,0,"File:cmd_utilities.h:move_cursor"]]]]);
